@@ -49,7 +49,7 @@ deck2 = shuffleBySerafim(deck)
 print(*deck2)
 
 for shift in range(36):
-    deck2 = deck2[:shift] + deck2[shift:]
+    deck2 = deck2[shift:] + deck2[:shift]
     
     count = 0
     countSenior = 0
