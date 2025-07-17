@@ -1,11 +1,13 @@
 import random
-import math
 
 # генерим колоду карт
-def createDeck():
+def createDeck(is54):
     deck = list() # пока пустая колода карт
     suits = "♡♢♣♠" # все масти
     seniority = ("6", "7", "8", "9", "10", "J", "Q", "K", "A") # все значения карт
+    if is54:
+        seniority = ("2", "3", "4", "5") + seniority
+        deck = ["RedJoker", "BlackJoker"]
 
     # создаем каждую карту (масть + значение)
     for senior in seniority: # проходимся по всем мастям
@@ -42,26 +44,29 @@ def shuffleBySerafim(deck):
 
     return deck[::-1]
 
-deck = createDeck()
+# функция, чтобы сравнивать колоды
+def compareDecks(deck1, deck2):
+    for shift in range(36):
+        deck2 = deck2[shift:] + deck2[:shift]
+        
+        count = 0
+        countSenior = 0
+
+        for j in range(36):
+            if deck1[j] == deck2[j]:
+                count += 1
+        
+        for j in range(36):
+            if deck1[j][1:] == deck2[j][1:]:
+                countSenior += 1
+
+        print(f"Сдвиг влево: {shift}    Общих совпадений: {count}   Совпадений по значению: {countSenior}")
+
+deck = createDeck(True)
 print(*deck)
 
 deck2 = shuffleBySerafim(deck)
 print(*deck2)
 
-for shift in range(36):
-    deck2 = deck2[shift:] + deck2[:shift]
-    
-    count = 0
-    countSenior = 0
-
-    for j in range(36):
-        if deck[j] == deck2[j]:
-            count += 1
-    
-    for j in range(36):
-        if deck[j][1:] == deck2[j][1:]:
-            countSenior += 1
-    
-    print(f"Сдвиг влево: {shift}    Общих совпадений: {count}   Совпадений по значению: {countSenior}")
-
+compareDecks(deck, deck2)
 
